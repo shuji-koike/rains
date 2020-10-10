@@ -1,0 +1,43 @@
+name: release
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: "12"
+      - uses: actions/cache@v2
+        id: cache_node_modules
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('package.json', 'yarn.lock') }}
+      - run: yarn install --frozen-lockfile
+        if: steps.cache_node_modules.outputs.cache-hit != 'true'
+      - run: npx webpack --config extension/webpack.config.js
+      - run: zip -r extension.zip extension
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extension.zip
+          path: extension.zip
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: extension.zip
+          asset_name: extension.zip
+          asset_content_type: application/zip
