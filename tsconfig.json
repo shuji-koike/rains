@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "target": "es6",
+    "module": "commonjs",
+    "esModuleInterop": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

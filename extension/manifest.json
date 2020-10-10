@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "@shuji-koike/rains",
+  "description": "",
+  "version": "0.1.0",
+  "content_scripts": [
+    {
+      "matches": ["https://system.reins.jp/reins/*"],
+      "run_at": "document_idle",
+      "js": ["build/content_script.js"]
+    }
+  ],
+  "permissions": ["https://system.reins.jp/reins/*"]
+}

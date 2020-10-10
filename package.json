@@ -1,0 +1,19 @@
+{
+  "name": "@shuji-koike/rains",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {},
+  "workspaces": [
+    "extension"
+  ],
+  "devDependencies": {
+    "@types/node": "^14.11.8",
+    "dotenv": "^8.2.0",
+    "prettier": "^2.1.2",
+    "ts-loader": "^8.0.4",
+    "ts-node-dev": "^1.0.0-pre.63",
+    "typescript": "^4.0.3",
+    "webpack": "4.44.2",
+    "webpack-cli": "^3.3.12"
+  }
+}
