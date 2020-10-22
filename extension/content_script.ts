@@ -90,3 +90,10 @@ function download(url: string, data: Record<string, string | string[]>) {
 function isHTMLInputElement(x: unknown): x is HTMLInputElement {
   return x instanceof HTMLInputElement;
 }
+
+document.getElementsByName("bkknShbt1").forEach((e) => {
+  if (e instanceof HTMLSelectElement && !e.value) e.value = "03";
+});
+document.getElementsByName("tdfkMi1").forEach((e) => {
+  if (e instanceof HTMLInputElement && !e.value) e.value = "東京都";
+});
