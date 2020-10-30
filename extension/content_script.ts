@@ -3,6 +3,7 @@ import Tesseract from "tesseract.js";
 // https://developer.chrome.com/extensions/content_scripts
 
 unCaptcha();
+replaceStaleToken();
 
 export async function unCaptcha() {
   const img = document.querySelector(
@@ -18,6 +19,22 @@ export async function unCaptcha() {
   const input = document.querySelector("input[name='kywrd']");
   if (!(input instanceof HTMLInputElement)) return;
   input.value = text;
+}
+
+function replaceStaleToken() {
+  const selector = "input[name='org.apache.struts.taglib.html.TOKEN']";
+  const token = document.querySelector<HTMLInputElement>(selector)?.value;
+  if (token) {
+    const tokens: string[] = JSON.parse(
+      sessionStorage.getItem("rains-tokens") || "[]"
+    );
+    if (tokens.includes(token))
+      [...document.querySelectorAll<HTMLInputElement>(selector)].forEach(
+        (e) => (e.value = tokens[tokens.length - 1])
+      );
+    else tokens.push(token);
+    sessionStorage.setItem("rains-tokens", JSON.stringify(tokens));
+  }
 }
 
 document
