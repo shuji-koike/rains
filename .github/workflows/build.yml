@@ -1,0 +1,25 @@
+name: build
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: "12"
+      - uses: actions/cache@v2
+        id: cache_node_modules
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('package.json', 'yarn.lock') }}
+      - run: yarn install --frozen-lockfile
+        if: steps.cache_node_modules.outputs.cache-hit != 'true'
+      - run: npx webpack --config extension/webpack.config.js
+        env:
+          NODE_ENV: production
+      - run: zip -jr extension.zip extension/build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extension.zip
+          path: extension.zip
