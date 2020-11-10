@@ -6,8 +6,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
@@ -21,6 +19,8 @@ jobs:
       - run: yarn install --frozen-lockfile
         if: steps.cache_node_modules.outputs.cache-hit != 'true'
       - run: npx webpack --config extension/webpack.config.js
+        env:
+          NODE_ENV: production
       - run: zip -jr extension.zip extension/build
       - uses: actions/upload-artifact@v2
         with:
